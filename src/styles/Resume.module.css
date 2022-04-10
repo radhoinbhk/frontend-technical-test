@@ -1,0 +1,21 @@
+.containerResume {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 40px 10px 0
+}
+.description {
+  padding: 20px 10px;
+  margin-top: 20px;
+  overflow: auto;
+  border-top: 1px solid #e6ebef;
+}
+
+.avatar {
+  background-color: #ec6f2293;
+  width: 70px;
+  height: 70px;
+  font-size: 28px;
+}

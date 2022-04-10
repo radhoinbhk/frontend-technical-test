@@ -1,67 +1,74 @@
-import type { FC } from 'react'
-import Head from 'next/head'
-import Image from 'next/image'
-import Logo from '../assets/lbc-logo.webp'
-import styles from '../styles/Home.module.css'
+import { FC, useEffect } from "react";
+import Head from "next/head";
+import loadable from "@loadable/component";
+import { useMediaQuery, useTheme } from "@mui/material";
+import { useAppDispatch } from "redux/hooks";
+import { setMobileMode } from "redux/application/applicationSlice";
+import { getLoggedUserId } from "utils/getLoggedUserId";
+import { getConversations } from "services/conversation";
+import { getUserById } from "services/users";
+import { setLoggedUser } from "redux/user/userSlice";
+import { ConversationType } from "types/conversation";
+import { setConversations } from "redux/conversation/conversationSlice";
+const MessengerDesktop = loadable(() => import("components/MessengerDesktop"));
+const MessengerMobile = loadable(() => import("components/MessengerMobile"));
 
 const Home: FC = () => {
-  const year = new Date().getFullYear()
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up("md"));
+  const dispatch = useAppDispatch();
+  const loggedUserId = getLoggedUserId();
+
+  useEffect(() => {
+    dispatch(setMobileMode(!matches));
+  }, [matches]);
+
+  useEffect(() => {
+    if (loggedUserId) {
+      getConversationsByUserId(loggedUserId);
+      getDataUserById(loggedUserId);
+    }
+  }, [loggedUserId]);
+
+  const getConversationsByUserId = (userID) => {
+    getConversations(userID)
+      .then((response) => {
+        filterByLastMessageTime(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getDataUserById = (userID) => {
+    getUserById(userID)
+      .then((response) => {
+        if (response.data) {
+          dispatch(setLoggedUser(response.data));
+        }
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const filterByLastMessageTime = (conversations: ConversationType[]) => {
+    const conversationsFiltred = conversations.sort(
+      (a, b) => b?.lastMessageTimestamp - a?.lastMessageTimestamp
+    );
+    dispatch(setConversations(conversationsFiltred));
+  };
 
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Frontend Technical test - Leboncoin</title>
-        <meta name="description" content="Frontend exercise for developpers who want to join us on leboncoin.fr"></meta>
+        <meta
+          name="description"
+          content="Frontend exercise for developpers who want to join us on leboncoin.fr"
+        ></meta>
       </Head>
-
-      <main className={styles.main}>
-        <Image src={Logo} alt="Leboncoin's logo" width={400} height={125} />
-        <h1 className={styles.title}>
-          Welcome !
-        </h1>
-
-        <p className={styles.description}>
-          This test is based on a <a href="https://nextjs.org/docs/getting-started" target="_blank" rel="noopener noreferrer">Next.js</a> application.<br />
-          Fork the repository and use the <code className={styles.code}>main</code> branch as your starting point.
-          <br /><br />
-
-          Get started by reading{' '}
-          <code className={styles.code}>README.md</code> and editing <code className={styles.code}>src/pages/index.js</code>
-          <br />
-          Once you are done, send the repository link to your HR contact.
-        </p>
-
-        <div className={styles.grid}>
-          <article className={styles.card}>
-            <h2>Design</h2>
-            <p>Feel free to create any design you want for this exercise. Let your creativity talks !</p>
-          </article>
-
-          <article className={styles.card}>
-            <h2>Libraries</h2>
-            <p>Feel free to use any library you want. Only Next.js / React are required.</p>
-          </article>
-
-          <article className={styles.card}>
-            <h2>API Server</h2>
-            <p>
-              Start the API server on port <code className={styles.code}>3005</code> by running<br /><code className={styles.code}>npm run start-server</code>.<br/>
-              Find the swagger definitions in <code className={styles.code}>docs/api-swagger.yml</code> or <a href="https://leboncoin.tech/frontend-technical-test/" target="_blank" rel="noopener noreferrer">here</a>.
-            </p>
-          </article>
-
-          <article className={styles.card}>
-            <h2>Timing</h2>
-            <p>We recommend 4 hours for this test. You are free to spend more (or less) time, let us know how much time did you spend.</p>
-          </article>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        &copy; leboncoin - {year}
-      </footer>
+      {matches ? <MessengerDesktop /> : <MessengerMobile />}
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
