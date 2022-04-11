@@ -40,3 +40,12 @@ backend server is running here => [http://localhost:3005](http://localhost:3005)
 
 Enjoy this starter
 
+### DEMO
+![desktop demo](./desktop.png)
+
+![conversations Mobile demo](./conversationsMobile.png)
+
+![messages Mobile demo](./messagesMobile.png)
+
+### I worked a bit on Performance, Accessibility, Best Practice, SEO
+![lighthouse raport demo](./lighthouse.png)
