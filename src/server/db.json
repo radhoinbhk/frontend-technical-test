@@ -67,6 +67,13 @@
       "conversationId": 3,
       "authorId": 1,
       "id": 6
+    },
+    {
+      "body": "Bonjour c'est le second message de la première conversation",
+      "timestamp": 1649686877,
+      "conversationId": 1,
+      "authorId": 1,
+      "id": 7
     }
   ],
   "users": [

@@ -1,4 +1,4 @@
-import Conversations from "components/Conversations";
+import ConversationList from "components/ConversationList";
 import { useEffect, useState } from "react";
 import { selectedConversation } from "redux/conversation/conversationSlice";
 import { useAppSelector } from "redux/hooks";
@@ -20,7 +20,7 @@ const MessengerMobile = () => {
   return (
     <div>
       <div className={styles.contentMessenger}>
-        <Conversations />
+        <ConversationList />
       </div>
       <DiscussionMobile
         openDiscussionMobile={openDiscussionMobile}

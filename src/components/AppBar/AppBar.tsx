@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Box,
@@ -9,21 +9,36 @@ import {
   Container,
   Avatar,
   Tooltip,
-  MenuItem
+  MenuItem,
+  Badge,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import {
+  Menu as MenuIcon,
+  Mail as MailIcon,
+  Close as CloseIcon,
+} from "@mui/icons-material";
 import Image from "next/image";
 import { LeboncoinLogo } from "assets/image";
 import { useAppSelector } from "redux/hooks";
 import { mobileMode } from "redux/application/applicationSlice";
+import { useRouter } from "next/dist/client/router";
+import Link from "next/link";
+import styles from "styles/AppBar.module.css";
+import BasicDrawer from "components/Drawer";
+
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const ResponsiveAppBar = () => {
-  const [anchorElNav, setAnchorElNav] =
-    React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] =
-    React.useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [openDrawer, setOpenDrawer] = useState(false);
   const isMobileMode = useAppSelector(mobileMode);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isMobileMode) {
+      setOpenDrawer(false);
+    }
+  }, [isMobileMode]);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -31,6 +46,10 @@ const ResponsiveAppBar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const toggleDrawer = (bool: boolean) => {
+    setOpenDrawer(bool);
   };
 
   return (
@@ -49,6 +68,7 @@ const ResponsiveAppBar = () => {
               edge="start"
               color="primary"
               aria-label="menu"
+              onClick={() => toggleDrawer(true)}
             >
               <MenuIcon />
             </IconButton>
@@ -60,9 +80,32 @@ const ResponsiveAppBar = () => {
               justifyContent: isMobileMode ? "center" : "space-between",
             }}
           >
-            <Image alt="Leboncoin" src={LeboncoinLogo} width="200" height="50" />
-            <Box sx={{ flexGrow: 0 }}>
-              {!isMobileMode && (
+            <Link href={"/"} passHref>
+              <a>
+                <Image
+                  alt="Leboncoin"
+                  src={LeboncoinLogo}
+                  className={styles.logo}
+                  width="200"
+                  height="50"
+                />
+              </a>
+            </Link>
+            {!isMobileMode && (
+              <Box sx={{ flexGrow: 0 }}>
+                <IconButton
+                  size="large"
+                  aria-label="show 4 new mails"
+                  style={{ marginRight: 15 }}
+                  color="inherit"
+                  onClick={() => {
+                    router.push(`/messages`);
+                  }}
+                >
+                  <Badge badgeContent={4} color="primary">
+                    <MailIcon />
+                  </Badge>
+                </IconButton>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar sx={{ bgcolor: "#ff6e14" }} alt="Remy Sharp">
@@ -70,33 +113,34 @@ const ResponsiveAppBar = () => {
                     </Avatar>
                   </IconButton>
                 </Tooltip>
-              )}
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+            )}
           </div>
         </Toolbar>
       </Container>
+      <BasicDrawer openDrawer={openDrawer} setOpenDrawer={toggleDrawer} />
     </AppBar>
   );
 };

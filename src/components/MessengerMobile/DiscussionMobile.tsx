@@ -1,5 +1,5 @@
 import React from "react";
-import Messages from "components/Messages";
+import Messages from "components/Conversation";
 import {
   AppBar,
   Avatar,
@@ -17,6 +17,7 @@ import {
 import { ConversationType } from "types/conversation";
 import { useAppDispatch } from "redux/hooks";
 import { resetSelectedConversation } from "redux/conversation/conversationSlice";
+import { useRouter } from "next/dist/client/router";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -38,10 +39,12 @@ const DiscussionMobile = ({
   selectedConv,
 }: discussionMobileProps) => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const handleClose = () => {
     setOpenDiscussionMobile(false);
     dispatch(resetSelectedConversation());
+    router.push("/messages");
   };
 
   return (
