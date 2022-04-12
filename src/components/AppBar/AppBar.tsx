@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Box,
-  Toolbar,
   IconButton,
   Typography,
   Menu,
@@ -15,15 +14,14 @@ import {
 import {
   Menu as MenuIcon,
   Mail as MailIcon,
-  Close as CloseIcon,
 } from "@mui/icons-material";
-import Image from "next/image";
 import { LeboncoinLogo } from "assets/image";
 import { useAppSelector } from "redux/hooks";
 import { mobileMode } from "redux/application/applicationSlice";
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
-import styles from "styles/AppBar.module.css";
+// import styles from "styles/AppBar.module.css";
+import Style from "./AppBar.style";
 import BasicDrawer from "components/Drawer";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -55,13 +53,7 @@ const ResponsiveAppBar = () => {
   return (
     <AppBar position="relative" color="transparent">
       <Container maxWidth="xl">
-        <Toolbar
-          disableGutters
-          style={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
+        <Style.ToolbarContainer disableGutters>
           {isMobileMode && (
             <IconButton
               size="large"
@@ -73,19 +65,12 @@ const ResponsiveAppBar = () => {
               <MenuIcon />
             </IconButton>
           )}
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: isMobileMode ? "center" : "space-between",
-            }}
-          >
+          <Style.RightContents >
             <Link href={"/"} passHref>
               <a>
-                <Image
+                <Style.AppBarImage
                   alt="Leboncoin"
                   src={LeboncoinLogo}
-                  className={styles.logo}
                   width="200"
                   height="50"
                 />
@@ -137,8 +122,8 @@ const ResponsiveAppBar = () => {
                 </Menu>
               </Box>
             )}
-          </div>
-        </Toolbar>
+          </Style.RightContents>
+        </Style.ToolbarContainer>
       </Container>
       <BasicDrawer openDrawer={openDrawer} setOpenDrawer={toggleDrawer} />
     </AppBar>

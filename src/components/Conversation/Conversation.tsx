@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Item from "./Item";
-import styles from "styles/Message.module.css";
+import Style from "./Conversation.style";
 import { useAppSelector } from "redux/hooks";
 import { selectedConversation } from "redux/conversation/conversationSlice";
 import { creatNewMessage, getMessages } from "services/message";
@@ -108,9 +108,8 @@ const Conversations = () => {
   };
 
   return (
-    <div className={styles.containerMsg}>
-      <div
-        className={styles.containerDiscuss}
+    <Style.ContainerMsg>
+      <Style.ContainerDiscuss
         style={{
           paddingBottom: isMobileMode && 110,
         }}
@@ -129,9 +128,9 @@ const Conversations = () => {
               {message.sender &&
                 (message.first ||
                   (!message.first && !message.last && !message.middle)) && (
-                  <span className={styles.senderNickname}>
+                  <Style.SenderNickname>
                     {selectedConv.senderNickname}
-                  </span>
+                  </Style.SenderNickname>
                 )}
               <Item
                 sender={message.sender}
@@ -143,9 +142,8 @@ const Conversations = () => {
               </Item>
             </div>
           ))}
-      </div>
-      <form
-        className={styles.sendNewMsgContainer}
+      </Style.ContainerDiscuss>
+      <Style.SendNewMsgContainer
         style={{
           position: isMobileMode ? "fixed" : "initial",
           bottom: isMobileMode && 0,
@@ -170,8 +168,8 @@ const Conversations = () => {
         >
           <SendIcon />
         </Fab>
-      </form>
-    </div>
+      </Style.SendNewMsgContainer>
+    </Style.ContainerMsg>
   );
 };
 

@@ -1,18 +1,9 @@
-import { Avatar, Badge, Box, Rating, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Box, Rating, Typography } from "@mui/material";
 import { selectedConversation } from "redux/conversation/conversationSlice";
 import { useAppSelector } from "redux/hooks";
 import StarIcon from "@mui/icons-material/Star";
-import { styled } from "@mui/material/styles";
-import { useEffect, useState } from "react";
-import styles from "styles/Resume.module.css";
-
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  "& .MuiBadge-badge": {
-    backgroundColor: "#44b700",
-    color: "#44b700",
-    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-  },
-}));
+import Style from "./Resume.style";
 
 const Resume = () => {
   const selectedConv = useAppSelector(selectedConversation);
@@ -25,16 +16,16 @@ const Resume = () => {
   }, [selectedConv.senderNickname]);
 
   return (
-    <div className={styles.containerResume}>
-      <StyledBadge
+    <Style.ContainerResume>
+      <Style.StyledBadge
         overlap="circular"
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         variant="dot"
       >
-        <Avatar className={styles.avatar} alt={senderNickname}>
+        <Style.ResumeAvatar alt={senderNickname}>
           {senderNickname[0]}
-        </Avatar>
-      </StyledBadge>
+        </Style.ResumeAvatar>
+      </Style.StyledBadge>
       <Typography variant="h5" color="text.primary">
         {senderNickname}
       </Typography>
@@ -56,7 +47,7 @@ const Resume = () => {
         />
         <Box sx={{ ml: 2 }}>338 avis</Box>
       </Box>
-      <div className={styles.description}>
+      <Style.Description>
         <Typography variant="h6" color="text.primary">
           Description
         </Typography>
@@ -66,8 +57,8 @@ const Resume = () => {
           bien.
         </p>
         <p>Ce lot est compos…</p>
-      </div>
-    </div>
+      </Style.Description>
+    </Style.ContainerResume>
   );
 };
 
