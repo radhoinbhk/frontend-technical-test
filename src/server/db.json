@@ -74,6 +74,13 @@
       "conversationId": 1,
       "authorId": 1,
       "id": 7
+    },
+    {
+      "body": "Je vends cette console Nintendo Wii. Tout fonctionne parfaitement bien.",
+      "timestamp": 1649813717,
+      "conversationId": 1,
+      "authorId": 1,
+      "id": 8
     }
   ],
   "users": [
