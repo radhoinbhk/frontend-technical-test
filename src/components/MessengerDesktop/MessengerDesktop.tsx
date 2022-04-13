@@ -2,7 +2,7 @@ import ConversationList from "components/ConversationList";
 import Conversations from "components/Conversation";
 import Resume from "components/Resume";
 import { Paper } from "@mui/material";
-import styles from "styles/Messenger.module.css";
+import Style from "./MessengerDesktop.style";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import {
   getAllConversations,
@@ -43,19 +43,19 @@ const MessengerDesktop = () => {
   }, [id]);
 
   return (
-    <div className={styles.contentMessenger}>
-      <Paper className={styles.paper}>
-        <div className={styles.conversBlock}>
+    <Style.ContentMessenger>
+      <Style.ContainerPaper>
+        <Style.ConversBlock>
           <ConversationList />
-        </div>
-        <div className={styles.messageBlock}>
+        </Style.ConversBlock>
+        <Style.MessageBlock>
           <Conversations />
-        </div>
-        <div className={styles.resumeBlock}>
+        </Style.MessageBlock>
+        <Style.ResumeBlock>
           <Resume />
-        </div>
-      </Paper>
-    </div>
+        </Style.ResumeBlock>
+      </Style.ContainerPaper>
+    </Style.ContentMessenger>
   );
 };
 

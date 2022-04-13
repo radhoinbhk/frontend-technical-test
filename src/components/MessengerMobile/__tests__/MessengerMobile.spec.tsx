@@ -1,9 +1,9 @@
-import ResponsiveAppBar from "../AppBar";
+import MessengerMobile from "../MessengerMobile";
 import { render } from "services/testUtils/react";
 
 describe("AppBar", () => {
   it("should render correctly AppBar", () => {
     // Render the component
-    render(<ResponsiveAppBar />);
+    render(<MessengerMobile />);
   });
 });

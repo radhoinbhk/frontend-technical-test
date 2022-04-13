@@ -20,7 +20,6 @@ import { useAppSelector } from "redux/hooks";
 import { mobileMode } from "redux/application/applicationSlice";
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
-// import styles from "styles/AppBar.module.css";
 import Style from "./AppBar.style";
 import BasicDrawer from "components/Drawer";
 
